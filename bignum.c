@@ -330,7 +330,7 @@ void sqr (my_number * res, my_number * num)
 	copy(&n, num);
 	set_zero (res);
 	set_zero (&bit);
-	bit.half[SUM_HALF - 1] = 1 << (8 * sizeof (my_half) - 2);
+	bit.half[SUM_HALF - 1] = (my_half) 1 << (8 * sizeof (my_half) - 2);
 	
 	while (test_compare (&bit, &n) == 1 )	// rychlostni optimalizace
 		right (&bit, 2, 0);
