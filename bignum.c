@@ -31,7 +31,7 @@ int test_compare (my_number * a, my_number * b)
 }
 
 
-//	res = 0
+// res = 0
 void set_zero (my_number * res)
 {
 	int i;
@@ -41,7 +41,7 @@ void set_zero (my_number * res)
 }
 
 
-//	res = num
+// res = num
 void copy (my_number * res, my_number * num)
 {
 	int i;
@@ -304,12 +304,11 @@ void mul (my_number * res, my_number * a, my_number * b)
 
 		for (i_b = 0; i_b < SUM_HALF; i_b++) {
 
-			if (b->half[i_b] == 0)
-	continue;
+			if (b->half[i_b] == 0) continue;
 			i_r = i_a + i_b;
 			if (i_r >= SUM_HALF) {
-	fprintf (stderr, "preteceni o %i half!\n", 1 + i_r - SUM_HALF);
-	continue;
+				fprintf (stderr, "preteceni o %i half!\n", 1 + i_r - SUM_HALF);
+				continue;
 			}
 
 			m = a->half[i_a];
