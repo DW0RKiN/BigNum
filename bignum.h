@@ -1,20 +1,27 @@
 #include <stdio.h>
 #include <stdint.h>
 
-
-#define SUM_FULL	5
-#define SUM_HALF	(2*SUM_FULL)
-
-
 #ifndef _BIGNUM
 
 #define _BIGNUM
 
+#if 1
+
+#define SUM_FULL	2
+#define SUM_HALF	(2*SUM_FULL)
+typedef __uint128_t my_full;
+typedef uint64_t my_half;
+#define HALFSIZE	"16l"	// == sizeof(my_half)
+
+#else
+
+#define SUM_FULL	4
+#define SUM_HALF	(2*SUM_FULL)
 typedef uint64_t my_full;
 typedef uint32_t my_half;
-
 #define HALFSIZE	"8"	// == sizeof(my_half)
 
+#endif
 
 union cislo {
 	my_full full[SUM_FULL];
