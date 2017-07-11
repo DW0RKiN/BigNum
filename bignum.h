@@ -60,8 +60,10 @@ void print_hex_number (char * before, my_number * num, char * after);
 // ( num == 0 )
 int test_zero (my_number * num);
 
-// ( a > b )
-int test_great (my_number * a, my_number * b);
+// a >  b return  1
+// a == b return  0
+// a <  b return -1
+int test_compare (my_number * a, my_number * b);
 
 
 /*
@@ -132,6 +134,7 @@ int div (my_number * res, my_number * num);
  */
 
 // res = sqrt(num)
+// &res == &num je povoleno
 void sqr (my_number * res, my_number * num);
 
 
