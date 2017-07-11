@@ -65,7 +65,7 @@ int test_great (my_number * a, my_number * b);
 
 
 /*
- * Scitani a odctani
+ * Scitani a odcitani
  */
 
 // res--
