@@ -15,17 +15,18 @@ int test_zero (my_number * num)
 	return 1;
 }
 
-
-// ( a > b )
-int test_great (my_number * a, my_number * b)
+// a >  b return  1
+// a == b return  0
+// a <  b return -1
+int test_compare (my_number * a, my_number * b)
 {
 	int i;
 
 	for (i = SUM_FULL-1; i >= 0; i--)
-		if (a->full[i] > b->full[i])	// na pocatku mohou byt shodne
+		if (a->full[i] > b->full[i])
 			return 1;
 		else if (a->full[i] < b->full[i]) 
-			return 0;
+			return -1;
 	return 0;
 }
 
@@ -201,7 +202,7 @@ int div (my_number * res, my_number * num)
 
 	set_zero (pm);
 
-//			m << res << !(m - num)
+//	m << res << !(m - num)
 
 	for (i = 0; i < 8 * sizeof (my_number); i++) {	// rychlostni optimalizace
 		carry = left (res, 1, carry);
@@ -212,15 +213,15 @@ int div (my_number * res, my_number * num)
 		left (pm, 1, carry);
 		carry = 1 - sub (pn, pm, num);
 		if (carry) {
-			my_number *p;
-			p = pm;
+			my_number *temp;
+			temp = pm;
 			pm = pn;
-			pn = p;
+			pn = temp;
 		}
 		carry = left (res, 1, carry);
 	}
 
-	return test_zero (&m);
+	return test_zero (pm);		// pozor! diky prohazovani to muze ukazovat na n
 }
 
 
@@ -323,22 +324,24 @@ void mul (my_number * res, my_number * a, my_number * b)
 
 
 // res = sqrt(num)
+// &res == &num je povoleno
 void sqr (my_number * res, my_number * num)
 {
-	my_number bit, m, n;
+	my_number bit, temp, n;
+	copy(&n, num);
 	set_zero (res);
 	set_zero (&bit);
 	bit.half[SUM_HALF - 1] = 1 << (8 * sizeof (my_half) - 2);
-
-	while (test_great (&bit, num))	// rychlostni optimalizace
+	
+	while (test_compare (&bit, &n) == 1 )	// rychlostni optimalizace
 		right (&bit, 2, 0);
 
 	while (!test_zero (&bit)) {
-		add (&m, res, &bit);
+		add (&temp, res, &bit);
 		right (res, 1, 0);
 
-		if (!sub (&n, num, &m)) {
-			copy (num, &n);
+		if (!sub (&temp, &n, &temp)) {
+			copy (&n, &temp);
 			add (res, res, &bit);
 		}
 		right (&bit, 2, 0);
