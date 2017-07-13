@@ -53,11 +53,11 @@ void copy (my_number * res, my_number * num);
  */
 
 // res = 0
-void print_digit (my_number * res);
+void print_digit (FILE *stream, my_number * res);
 
-void print_number (char * before, my_number * num, char * after);
+void print_number (FILE *stream, char * before, my_number * num, char * after);
 
-void print_hex_number (char * before, my_number * num, char * after);
+void print_hex_number (FILE *stream, char * before, my_number * num, char * after);
 
 
 /*
@@ -104,15 +104,17 @@ my_half sub (my_number * res, my_number * a, my_number * b);
  * Posuny
  */
 
+
 // res <<= kolik
 // return carry
-// 0 <= kolik < 8*sizeof(my_half)
-my_half left (my_number * res, int kolik, my_half carry);
+// 0 <= kolik < 8*sizeof(my_full)
+my_full left (my_number * res, int kolik, my_full carry);
+
 
 // res >>= kolik
 // return carry
-// 0 <= kolik < 8*sizeof(my_half)
-my_half right (my_number * res, int kolik, my_half carry);
+// 0 <= kolik < 8*sizeof(my_full)
+my_half right (my_number * res, int kolik, my_full carry);
 
 
 /*
@@ -132,7 +134,7 @@ void mul (my_number * res, my_number * a, my_number * b);
 
 // res = res / num
 // return ( (res % num) == 0 )
-// &res == &b NENI povoleno
+// &res == &num NENI povoleno
 int div (my_number * res, my_number * num);
 
 
