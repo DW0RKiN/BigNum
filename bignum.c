@@ -80,19 +80,18 @@ void set_from_string (my_number * res, char * text)
 
 
 // res = res << kolik
-// return carry
-// 0 <= kolik < 8*sizeof(my_half)
-my_half left (my_number * res, int kolik, my_half carry)
+// return carry (.... ..11)
+// 0 <= kolik < 8*sizeof(my_full)
+my_full left (my_number * res, int kolik, my_full carry)
 {
 	int i;
-	my_full x = 0;
-	my_half *px = (my_half *) & x;
+	my_full x;
 
-	for (i = 0; i < SUM_HALF; i++) {
-		x = res->half[i];
-		x <<= kolik;
-		res->half[i] = px[0] + carry;
-		carry = px[1];
+	for (i = 0; i < SUM_FULL; i++) {
+		x = res->full[i];
+		res->full[i] <<= kolik;
+		res->full[i] |= carry;
+		carry = x >> (8 * sizeof(my_full) - kolik); 
 	}
 
 	return carry;
@@ -100,20 +99,18 @@ my_half left (my_number * res, int kolik, my_half carry)
 
 
 // res = res >> kolik
-// return carry
-// 0 <= kolik < 8*sizeof(my_half)
-my_half right (my_number * res, int kolik, my_half carry)
+// return carry (11.. ....)
+// 0 <= kolik < 8*sizeof(my_full)
+my_half right (my_number * res, int kolik, my_full carry)
 {
 	int i;
-	my_half n;
+	my_full x;
 
-	for (i = SUM_HALF - 1; i >= 0; i--) {
-		n = res->half[i];
-		n >>= kolik;
-		n |= carry;
-		carry = res->half[i];
-		carry <<= 8 * sizeof (my_half) - kolik;
-		res->half[i] = n;
+	for (i = SUM_FULL - 1; i >= 0; i--) {
+		x = res->full[i];
+		res->full[i] >>= kolik;
+		res->full[i] |= carry;
+		carry = x << (8 * sizeof (my_full) - kolik);
 	}
 
 	return carry;
@@ -190,21 +187,48 @@ my_half div_half (my_number * res, my_half half)
 }
 
 
+// res <<= x
+// return x
+// hi_byte (res) != 0
+int left_to_nonzero (my_number *res) 
+{
+	int ret,j,k;
+	char *str = (char *) res;
+	
+	// Finding the first non-zero element
+	ret = 0;
+	j = sizeof (my_number) -1;
+	do {
+		if ( str[j] ) break;
+		ret += 8;
+	} while (j--);
+	
+	if ( ret == 0 || j < 0 ) return ret;
+
+	k = sizeof (my_number);
+	do str[--k] = str[j]; while ( j-- );
+	while ( k--) str[k] = 0;
+
+	return ret;
+}
+
+
 // res = res / num
 // return ( (res % num) == 0 )
-// &res == &b NENI povoleno
+// &res == &num NENI povoleno
 int div (my_number * res, my_number * num)
 {
 	int i;
 	my_number m, n;
 	my_number *pm = &m, *pn = &n;
-	my_half carry = 0;
+	my_full carry = 0;
 
 	set_zero (pm);
 
 //	m << res << !(m - num)
 
-	for (i = 0; i < 8 * sizeof (my_number); i++) {	// rychlostni optimalizace
+	i = left_to_nonzero( res );
+	for (; i < 8 * sizeof (my_number); i++) {	// rychlostni optimalizace
 		carry = left (res, 1, carry);
 		if ( carry ) break;
 	}
@@ -349,45 +373,45 @@ void sqr (my_number * res, my_number * num)
 
 
 // res = 0
-void print_digit (my_number * res)
+void print_digit (FILE *stream, my_number * res)
 {
 	my_half zbytek;
 
 	zbytek = div_half (res, 10);
 	if (!test_zero (res))
-		print_digit (res);
-	printf ("%i", (int) zbytek);
+		print_digit (stream, res);
+	fprintf (stream, "%i", (int) zbytek);
 
 }
 
 
-void print_number (char * before, my_number * num, char * after)
+void print_number (FILE *stream, char * before, my_number * num, char * after)
 {
 	my_number a;
 	
 	if (before)
-		printf ("%s", before);
+		fprintf (stream, "%s", before);
 
 	copy (&a, num);
-	print_digit (&a);
+	print_digit (stream, &a);
 
 	if (after)
-		printf ("%s", after);
+		fprintf (stream, "%s", after);
 }
 
 
-void print_hex_number (char * before, my_number * num, char * after)
+void print_hex_number (FILE *stream, char * before, my_number * num, char * after)
 {
 	int i;
 
 	if (before)
-		printf ("%s", before);
+		fprintf (stream, "%s", before);
 
 	for (i = SUM_HALF - 1; i >= 0; i--)
-		printf ("%0" HALFSIZE "X ", num->half[i]);
+		fprintf (stream, "%0" HALFSIZE "X ", num->half[i]);
 
 	if (after)
-		printf ("%s", after);
+		fprintf (stream, "%s", after);
 }
 
 
