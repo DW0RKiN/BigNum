@@ -152,18 +152,16 @@ my_half sub (my_number * res, my_number * a, my_number * b)
 {
 	int i;
 	my_full x = 0;
-	my_half *px = (my_half *) & x;
 	my_half carry = 0;
 
-	for (i = 0; i < SUM_HALF; i++) {
-		px[1] = 1;
-		px[0] = a->half[i];
-		x -= b->half[i];
-		x -= carry;
-		res->half[i] = px[0];
-		carry = 1 - px[1];
+	for (i = 0; i < SUM_FULL; i++) {
+		x = a->full[i];
+		res->full[i] = a->full[i] - b->full[i] - carry;
+		carry = 0;
+		if ( x > res->full[i] ) continue;
+		if ( res->full[i] == x && b->full[i] == 0 ) continue;
+		carry = 1;
 	}
-
 	return carry;
 }
 
@@ -278,19 +276,19 @@ void add_half (my_number * res, my_half num, int i)
 my_half add (my_number * res, my_number * a, my_number * b)
 {
 	int i;
-	my_full m = 0;
-	my_half *pm = (my_half *) & m;
+	my_full x;
+	my_half carry = 0;
 
-	for (i = 0; i < SUM_HALF; i++) {
-		m += a->half[i];
-		m += b->half[i];
-		res->half[i] = pm[0];
-
-		pm[0] = pm[1];		// carry
-		pm[1] = 0;
+	for (i = 0; i < SUM_FULL; i++) {
+		x = a->full[i];
+		res->full[i] = a->full[i] + b->full[i] + carry;
+		carry = 0;
+		if ( res->full[i] > x ) continue;
+		if ( res->full[i] == x && b->full[i] == 0 ) continue;
+		carry = 1;
 	}
 
-	return pm[0];
+	return carry;
 }
 
 
