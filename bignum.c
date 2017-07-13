@@ -79,7 +79,7 @@ void set_from_string (my_number * res, char * text)
 }
 
 
-// res = res << kolik
+// res <<= kolik
 // return carry (.... ..11)
 // 0 <= kolik < 8*sizeof(my_full)
 my_full left (my_number * res, int kolik, my_full carry)
@@ -98,10 +98,10 @@ my_full left (my_number * res, int kolik, my_full carry)
 }
 
 
-// res = res >> kolik
+// res >>= kolik
 // return carry (11.. ....)
 // 0 <= kolik < 8*sizeof(my_full)
-my_half right (my_number * res, int kolik, my_full carry)
+my_full right (my_number * res, int kolik, my_full carry)
 {
 	int i;
 	my_full x;
@@ -311,38 +311,21 @@ void mul_half (my_number * res, my_half half)
 
 
 // res = a*b
-// &res == &a je povoleno
-void mul (my_number * res, my_number * a, my_number * b)
+// &res == &a == &b je povoleno
+void mul (my_number * res, my_number * const_a, my_number * const_b)
 {
-	int i_r, i_a, i_b;
-	my_full m;
-	my_half *pm = (my_half *) & m;
-	my_number r;
+	if ( test_compare( const_a, const_b ) > 0 ) return mul ( res, const_b, const_a );
+	my_number a,b;
 
-	set_zero (&r);
-
-	for (i_a = SUM_HALF - 1; i_a >= 0; i_a--) {
-
-		if (a->half[i_a] == 0)
-			continue;
-
-		for (i_b = 0; i_b < SUM_HALF; i_b++) {
-
-			if (b->half[i_b] == 0) continue;
-			i_r = i_a + i_b;
-			if (i_r >= SUM_HALF) {
-				fprintf (stderr, "preteceni o %i half!\n", 1 + i_r - SUM_HALF);
-				continue;
-			}
-
-			m = a->half[i_a];
-			m *= b->half[i_b];
-			m += r.half[i_r];
-			r.half[i_r] = pm[0];
-			add_half (&r, pm[1], i_r);
-		}
+	copy( &a, const_a );
+	copy( &b, const_b );
+	set_zero (res);
+	if ( test_zero(const_b) ) return;
+	
+	while ( ! test_zero( &a) ) {
+		if ( right( &a, 1, 0) ) add(res,res,&b);
+		if ( left(&b,1,0) ) fprintf(stderr, "Preteceni pri nasobeni!\n");
 	}
-	copy (res, &r);		// cena za moznost &res == &a
 }
 
 
