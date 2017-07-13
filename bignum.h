@@ -114,7 +114,7 @@ my_full left (my_number * res, int kolik, my_full carry);
 // res >>= kolik
 // return carry
 // 0 <= kolik < 8*sizeof(my_full)
-my_half right (my_number * res, int kolik, my_full carry);
+my_full right (my_number * res, int kolik, my_full carry);
 
 
 /*
@@ -129,8 +129,8 @@ void mul_half (my_number * res, my_half half);
 my_half div_half (my_number * res, my_half half);
 
 // res = a*b
-// &res == &a je povoleno
-void mul (my_number * res, my_number * a, my_number * b);
+// &res == &a == &b je povoleno
+void mul (my_number * res, my_number * const_a, my_number * const_b);
 
 // res = res / num
 // return ( (res % num) == 0 )
