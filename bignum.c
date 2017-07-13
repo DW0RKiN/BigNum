@@ -309,7 +309,7 @@ void mul_half (my_number * res, my_half half)
 
 
 // res = a*b
-// &res == &a == &b je povoleno
+// &res == &const_a == &const_b je povoleno
 void mul (my_number * res, my_number * const_a, my_number * const_b)
 {
 	if ( test_compare( const_a, const_b ) > 0 ) return mul ( res, const_b, const_a );
@@ -317,8 +317,8 @@ void mul (my_number * res, my_number * const_a, my_number * const_b)
 
 	copy( &a, const_a );
 	copy( &b, const_b );
-	set_zero (res);
-	if ( test_zero(const_b) ) return;
+	set_zero (res);		// musi byt posledni kvuli &res == &const_a == &const_b
+	if ( test_zero(&b) ) return;
 	
 	while ( ! test_zero( &a) ) {
 		if ( right( &a, 1, 0) ) add(res,res,&b);
