@@ -104,6 +104,11 @@ my_half sub (my_number * res, my_number * a, my_number * b);
  * Posuny
  */
 
+// res <<= 1
+int shift_left_1 ( my_number * res, int old_carry );
+
+// res >>= 1
+int  shift_right_1 ( my_number * res, int old_carry );
 
 // res <<= kolik
 // return carry
@@ -129,7 +134,7 @@ void mul_half (my_number * res, my_half half);
 my_half div_half (my_number * res, my_half half);
 
 // res = a*b
-// &res == &a == &b je povoleno
+// &res == &const_a == &const_b je povoleno
 void mul (my_number * res, my_number * const_a, my_number * const_b);
 
 // res = res / num
