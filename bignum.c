@@ -79,6 +79,38 @@ void set_from_string (my_number * res, char * text)
 }
 
 
+// res <<= 1
+int shift_left_1 ( my_number * res, int old_carry )
+{
+	int i;
+	my_full carry;
+
+	for (i = 0; i < SUM_FULL; i++) {
+		carry = old_carry; 
+		old_carry = res->full[i] >> (8 * sizeof (my_full) - 1) ;
+		res->full[i] <<= 1;
+		res->full[i] |= carry;
+	}
+	return old_carry;
+}
+
+
+// res >>= 1
+int  shift_right_1 ( my_number * res, int old_carry )
+{
+	int i;
+	my_full carry;
+
+	for (i = SUM_FULL - 1; i >= 0; i--) {
+		carry = ( old_carry ? (my_full) 1 << (8 * sizeof (my_full) - 1) : 0);
+		old_carry = res->full[i] & 1;
+		res->full[i] >>= 1;
+		res->full[i] |= carry;
+	}
+	return old_carry;
+}
+
+
 // res <<= kolik
 // return carry (.... ..11)
 // 0 <= kolik < 8*sizeof(my_full)
@@ -227,12 +259,12 @@ int div (my_number * res, my_number * num)
 
 	i = left_to_nonzero( res );
 	for (; i < 8 * sizeof (my_number); i++) {	// rychlostni optimalizace
-		carry = left (res, 1, carry);
+		carry = shift_left_1 (res, carry);
 		if ( carry ) break;
 	}
 	
 	for (; i < 8 * sizeof (my_number); i++) {
-		left (pm, 1, carry);
+		shift_left_1 (pm, carry);
 		carry = 1 - sub (pn, pm, num);
 		if (carry) {
 			my_number *temp;
@@ -240,7 +272,7 @@ int div (my_number * res, my_number * num)
 			pm = pn;
 			pn = temp;
 		}
-		carry = left (res, 1, carry);
+		carry = shift_left_1 (res, carry);
 	}
 
 	return test_zero (pm);		// pozor! diky prohazovani to muze ukazovat na n
@@ -312,17 +344,19 @@ void mul_half (my_number * res, my_half half)
 // &res == &const_a == &const_b je povoleno
 void mul (my_number * res, my_number * const_a, my_number * const_b)
 {
-	if ( test_compare( const_a, const_b ) > 0 ) return mul ( res, const_b, const_a );
 	my_number a,b;
-
-	copy( &a, const_a );
-	copy( &b, const_b );
-	set_zero (res);		// musi byt posledni kvuli &res == &const_a == &const_b
-	if ( test_zero(&b) ) return;
+	if ( test_compare( const_a, const_b ) > 0 ) {
+		copy( &a, const_b );
+		copy( &b, const_a );
+	} else {
+		copy( &a, const_a );
+		copy( &b, const_b );
+	}
+	set_zero (res);					// musi byt posledni kvuli &res == &const_a == &const_b
 	
 	while ( ! test_zero( &a) ) {
-		if ( right( &a, 1, 0) ) add(res,res,&b);
-		if ( left(&b,1,0) ) fprintf(stderr, "Preteceni pri nasobeni!\n");
+		if ( shift_right_1 ( &a, 0 )) add(res,res,&b);
+		if ( shift_left_1 ( &b, 0 )) fprintf(stderr, "Preteceni pri nasobeni!\n");
 	}
 }
 
@@ -342,7 +376,7 @@ void sqr (my_number * res, my_number * num)
 
 	while (!test_zero (&bit)) {
 		add (&temp, res, &bit);
-		right (res, 1, 0);
+		shift_right_1 (res, 0);
 
 		if (!sub (&temp, &n, &temp)) {
 			copy (&n, &temp);
