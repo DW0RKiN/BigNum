@@ -361,6 +361,24 @@ void mul (my_number * res, my_number * const_a, my_number * const_b)
 }
 
 
+// res = res^pow
+void power (my_number * res, unsigned int pow)
+{
+	my_number temp;
+	
+	copy(&temp, res);
+	set_zero(res);
+	res->half[0]++;		// res = 1
+	
+	while ( pow ) {
+		if ( pow & 1 ) mul (res, res, &temp);
+		mul (&temp, &temp, &temp);
+		pow >>= 1;
+	}
+	return;
+}
+
+
 // res = sqrt(num)
 // &res == &num je povoleno
 void sqr (my_number * res, my_number * num)
