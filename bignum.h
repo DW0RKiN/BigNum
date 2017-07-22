@@ -151,6 +151,7 @@ int div (my_number * res, my_number * num);
 // &res == &num je povoleno
 void sqr (my_number * res, my_number * num);
 
-
+// res = res^pow
+void power (my_number * res, unsigned int pow);
 
 #endif
