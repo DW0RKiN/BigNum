@@ -63,6 +63,8 @@ Library for basic mathematical operations with preselected bit length.
 	}
 
 
+compile and run
+
     dworkin@dworkin-Aspire-E1-572G:~/Programovani$ clang --version
     clang version 3.8.0-2ubuntu4 (tags/RELEASE_380/final)
     Target: x86_64-pc-linux-gnu
