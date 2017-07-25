@@ -23,11 +23,18 @@ typedef uint32_t my_half;
 
 #endif
 
+union mix {
+	my_full f;
+	my_half h[2];
+};
+
 union cislo {
 	my_full full[SUM_FULL];
 	my_half half[SUM_HALF];
 };
 
+
+typedef union mix my_mix;
 typedef union cislo my_number;
 
 
@@ -104,22 +111,15 @@ my_half sub (my_number * res, my_number * a, my_number * b);
  * Posuny
  */
 
-// res <<= 1
-int shift_left_1 ( my_number * res, int old_carry );
-
-// res >>= 1
-int  shift_right_1 ( my_number * res, int old_carry );
-
 // res <<= kolik
-// return carry
-// 0 <= kolik < 8*sizeof(my_full)
-my_full left (my_number * res, int kolik, my_full carry);
-
+// return carry (.... ..11)
+// 0 <= kolik < 8*sizeof(my_half)
+my_half shift_left ( my_number * res, int kolik, my_half carry );
 
 // res >>= kolik
 // return carry
-// 0 <= kolik < 8*sizeof(my_full)
-my_full right (my_number * res, int kolik, my_full carry);
+// 0 <= kolik < 8*sizeof(my_half)
+my_half right (my_number * res, int kolik, my_half carry);
 
 
 /*
@@ -153,5 +153,10 @@ void sqr (my_number * res, my_number * num);
 
 // res = res^pow
 void power (my_number * res, unsigned int pow);
+
+// res <<= x
+// return x
+// hi_byte (res) != 0
+int left_to_nonzero (my_number *res);
 
 #endif
