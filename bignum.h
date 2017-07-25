@@ -119,7 +119,7 @@ my_half shift_left ( my_number * res, int kolik, my_half carry );
 // res >>= kolik
 // return carry
 // 0 <= kolik < 8*sizeof(my_half)
-my_half right (my_number * res, int kolik, my_half carry);
+my_half shift_right (my_number * res, int kolik, my_half carry);
 
 
 /*
