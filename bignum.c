@@ -424,6 +424,24 @@ void sqr (my_number * res, my_number * num)
 }
 
 
+// res = res^pow
+void power (my_number * res, unsigned int pow)
+{
+	my_number temp;
+	
+	copy(&temp, res);
+	set_zero(res);
+	res->half[0]++;		// res = 1
+	
+	while ( pow ) {
+		if ( pow & 1 ) mul (res, res, &temp);
+		mul (&temp, &temp, &temp);
+		pow >>= 1;
+	}
+	return;
+}
+
+
 // res <<= x
 // return x
 // hi_byte (res) != 0
