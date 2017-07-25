@@ -63,6 +63,11 @@ Library for basic mathematical operations with preselected bit length.
 	}
 
 
+    dworkin@dworkin-Aspire-E1-572G:~/Programovani$ clang --version
+    clang version 3.8.0-2ubuntu4 (tags/RELEASE_380/final)
+    Target: x86_64-pc-linux-gnu
+    Thread model: posix
+    InstalledDir: /usr/bin
     dworkin@dworkin-Aspire-E1-572G:~/Programovani$ clang -O3 -std=c99 -Wall euler03.c -o euler03 
     dworkin@dworkin-Aspire-E1-572G:~/Programovani$ ./euler03 12345678901234567890123456
     Project Euler problem 3
@@ -71,6 +76,11 @@ Library for basic mathematical operations with preselected bit length.
 
 gcc -O3 fail!
 
+    dworkin@dworkin-Aspire-E1-572G:~/Programovani$ gcc --version
+    gcc (Ubuntu 5.4.0-6ubuntu1~16.04.4) 5.4.0 20160609
+    Copyright (C) 2015 Free Software Foundation, Inc.
+    This is free software; see the source for copying conditions.  There is NO
+    warranty; not even for MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.
     dworkin@dworkin-Aspire-E1-572G:~/Programovani$ gcc -O2 -std=c99 -Wall test_bignum.c -o euler03
     dworkin@dworkin-Aspire-E1-572G:~/Programovani$ ./euler03 12345678901234567890123456
     Project Euler problem 3
