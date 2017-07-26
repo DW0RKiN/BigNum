@@ -70,21 +70,28 @@ compile and run
     Target: x86_64-pc-linux-gnu
     Thread model: posix
     InstalledDir: /usr/bin
+    
     dworkin@dworkin-Aspire-E1-572G:~/Programovani$ clang -O3 -std=c99 -Wall euler03.c -o euler03 
     dworkin@dworkin-Aspire-E1-572G:~/Programovani$ ./euler03 12345678901234567890123456
     Project Euler problem 3
 	    12345678901234567890123456 = 2*2*2*2*2*2*3*17*71*218107*244251294564157
     time: 3.932000
 
-gcc -O3 fail!
-
     dworkin@dworkin-Aspire-E1-572G:~/Programovani$ gcc --version
     gcc (Ubuntu 5.4.0-6ubuntu1~16.04.4) 5.4.0 20160609
     Copyright (C) 2015 Free Software Foundation, Inc.
     This is free software; see the source for copying conditions.  There is NO
     warranty; not even for MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.
-    dworkin@dworkin-Aspire-E1-572G:~/Programovani$ gcc -O2 -std=c99 -Wall test_bignum.c -o euler03
+    
+    dworkin@dworkin-Aspire-E1-572G:~/Programovani$ gcc -O2 -std=c99 -Wall euler03.c -o euler03
     dworkin@dworkin-Aspire-E1-572G:~/Programovani$ ./euler03 12345678901234567890123456
     Project Euler problem 3
 	    12345678901234567890123456 = 2*2*2*2*2*2*3*17*71*218107*244251294564157
     time: 11.140000
+    
+    dworkin@dworkin-Aspire-E1-572G:~/Programovani$ gcc -O3 -std=c99 -Wall euler03.c -o euler03
+    dworkin@dworkin-Aspire-E1-572G:~/Programovani$ ./euler03 12345678901234567890123456
+    Project Euler problem 3
+	    12345678901234567890123456 = 2*2*2*2*2*2*3*17*71*218107*244251294564157
+    time: 1619.884000
+
