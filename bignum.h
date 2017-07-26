@@ -1,26 +1,37 @@
+/* use 
+
+#define MAX_ARRAY_INDEX		1+
+#define ARRAY_128_BIT		0 or 1
+
+before #include "bignum.c"
+*/
+
 #include <stdio.h>
 #include <stdint.h>
 
 #ifndef _BIGNUM
-
 #define _BIGNUM
 
-#if 1
+#ifndef ARRAY_128_BIT
+	#define ARRAY_128_BIT		0
+#endif
 
-#define SUM_FULL	2
-#define SUM_HALF	(2*SUM_FULL)
-typedef __uint128_t my_full;
-typedef uint64_t my_half;
-#define HALFSIZE	"16l"	// == sizeof(my_half)
+#ifndef MAX_ARRAY_INDEX
+	#define MAX_ARRAY_INDEX		2
+#endif
 
+#if ARRAY_128_BIT
+	#define SUM_FULL	MAX_ARRAY_INDEX
+	#define SUM_HALF	(2*MAX_ARRAY_INDEX)
+	typedef __uint128_t my_full;
+	typedef uint64_t my_half;
+	#define HALFSIZE	"16l"	// == sizeof(my_half)
 #else
-
-#define SUM_FULL	4
-#define SUM_HALF	(2*SUM_FULL)
-typedef uint64_t my_full;
-typedef uint32_t my_half;
-#define HALFSIZE	"8"	// == sizeof(my_half)
-
+	#define SUM_FULL	MAX_ARRAY_INDEX
+	#define SUM_HALF	(2*MAX_ARRAY_INDEX)
+	typedef uint64_t my_full;
+	typedef uint32_t my_half;
+	#define HALFSIZE	"8"	// == sizeof(my_half)
 #endif
 
 union mix {
