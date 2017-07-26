@@ -1,6 +1,9 @@
 # BigNum
 Library for basic mathematical operations with preselected bit length.
 
+The size of the number is 64*(1+ARRAY_128_BIT)*MAX_ARRAY_INDEX bits.
+
+
 	#include <stdio.h>
 	#include <stdint.h>
 	#include <time.h>
