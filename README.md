@@ -44,7 +44,7 @@ Library for basic mathematical operations with preselected bit length.
 				i = 1;
 			}
 		}
-		print_number (stdout, "*", &n, "\n");
+		print_number (stdout, s1, &n, "\n");
 	}
 	
 	int main(int argc, char * argv[]) 
