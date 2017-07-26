@@ -3,9 +3,12 @@ Library for basic mathematical operations with preselected bit length.
 
 	#include <stdio.h>
 	#include <stdint.h>
-	#include "bignum.c"
 	#include <time.h>
 	#include <sys/resource.h>
+	
+	#define MAX_ARRAY_INDEX		2
+	#define ARRAY_128_BIT		1
+	#include "bignum.c"
 	
 	double getcputime(void)        
 	{
@@ -24,7 +27,7 @@ Library for basic mathematical operations with preselected bit length.
 		print_number ( stdout, "Project Euler problem 3\n\t", num, " =");	
 		int i = 0;
 		my_number stop, n, temp, prime;
-		char * s1 = " ", *s2 = "*";
+		char * s = " ";
 		copy(&n,num);
 		sqr(&stop, num);
 		set_full(&prime, 2);
@@ -35,8 +38,9 @@ Library for basic mathematical operations with preselected bit length.
 			{
 				copy(&n, &temp );
 				sqr(&stop, &n);
-				print_number (stdout, s1, &prime, NULL);
-				s1 = s2;
+				print_number (stdout, s, &prime, NULL);
+				s = "*";
+
 			} else 
 			{
 				inc(&prime);
@@ -44,7 +48,7 @@ Library for basic mathematical operations with preselected bit length.
 				i = 1;
 			}
 		}
-		print_number (stdout, s1, &n, "\n");
+		print_number (stdout, s, &n, "\n");
 	}
 	
 	int main(int argc, char * argv[]) 
@@ -61,6 +65,7 @@ Library for basic mathematical operations with preselected bit length.
 		printf("time: %f\n", getcputime() - start);
 		return 0;
 	}
+
 
 
 compile and run
