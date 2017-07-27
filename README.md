@@ -33,7 +33,7 @@ The size of the number is 64*(1+ARRAY_128_BIT)*MAX_ARRAY_INDEX bits.
 		my_number stop, n, temp, prime;
 		char * s = " ";
 		copy(&n,num);					// n = num;
-		sqr(&stop, num);
+		sqr(&stop, num);				// stop = sqrt(num);
 		set_full(&prime, 2);				// prime = 2;
 		while ( test_compare(&stop, &prime) >= 0 ) 
 		{
