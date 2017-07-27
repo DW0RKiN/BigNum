@@ -1,6 +1,8 @@
 # BigNum
 Library for basic mathematical operations with preselected bit length.
 
+Support: conversion from/into a string, compare, increase, decrease, addition, subtraction, multiplication, division, square root, exponentiation, bit shifts, ... https://github.com/DW0RKiN/BigNum/blob/master/bignum.h
+
 The size of the number is 64*(1+ARRAY_128_BIT)*MAX_ARRAY_INDEX bits.
 
 
