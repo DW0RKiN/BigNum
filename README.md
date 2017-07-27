@@ -5,7 +5,6 @@ Support: conversion from/into a string, compare, increase, decrease, addition, s
 
 The size of the number is 64*(1+ARRAY_128_BIT)*MAX_ARRAY_INDEX bits.
 
-
 	#include <stdio.h>
 	#include <stdint.h>
 	#include <time.h>
@@ -33,23 +32,23 @@ The size of the number is 64*(1+ARRAY_128_BIT)*MAX_ARRAY_INDEX bits.
 		int i = 0;
 		my_number stop, n, temp, prime;
 		char * s = " ";
-		copy(&n,num);
+		copy(&n,num);						// n = num;
 		sqr(&stop, num);
-		set_full(&prime, 2);
+		set_full(&prime, 2);					// prime = 2;
 		while ( test_compare(&stop, &prime) >= 0 ) 
 		{
-			copy(&temp, &n);
-			if ( div ( &temp, &prime ) ) 
+			copy(&temp, &n);				// temp = n;
+			if ( div ( &temp, &prime ) ) 			// return !(temp % prime); temp /= prime; 
 			{
-				copy(&n, &temp );
-				sqr(&stop, &n);
+				copy(&n, &temp );			// n = temp;
+				sqr(&stop, &n);				// stop = sqrt(n);
 				print_number (stdout, s, &prime, NULL);
 				s = "*";
 
 			} else 
 			{
-				inc(&prime);
-				if ( i ) inc(&prime);
+				inc(&prime);				// prime++;
+				if ( i ) inc(&prime);			// if ( i ) prime++;
 				i = 1;
 			}
 		}
@@ -64,13 +63,12 @@ The size of the number is 64*(1+ARRAY_128_BIT)*MAX_ARRAY_INDEX bits.
 			return 1;
 		}
 		my_number max;
-		set_from_string(&max,argv[1]);	
+		set_from_string(&max,argv[1]);				// max = argv[1]
 		double start = getcputime();
 		project_Euler_03(&max);
 		printf("time: %f\n", getcputime() - start);
 		return 0;
 	}
-
 
 
 compile and run
