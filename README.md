@@ -30,7 +30,7 @@ The size of the number is 64*(1+ARRAY_128_BIT)*MAX_ARRAY_INDEX bits.
 	{
 		print_number ( stdout, "Project Euler problem 3\n\t", num, " =");	
 		int i = 0;
-		my_number stop, n, temp, prime;
+		my_number stop, n, temp, prime, mod;
 		char * s = " ";
 		copy(&n,num);					// n = num;
 		sqr(&stop, num);				// stop = sqrt(num);
@@ -38,7 +38,8 @@ The size of the number is 64*(1+ARRAY_128_BIT)*MAX_ARRAY_INDEX bits.
 		while ( test_compare(&stop, &prime) >= 0 ) 
 		{
 			copy(&temp, &n);			// temp = n;
-			if ( div ( &temp, &prime ) ) 		// return !(temp % prime); temp /= prime; 
+			div ( &temp, &prime, &mod );		// mod = temp % prime; temp /= prime;
+			if ( test_zero ( &mod ) ) 		// if ( mod == 0 )
 			{
 				copy(&n, &temp );		// n = temp;
 				sqr(&stop, &n);			// stop = sqrt(n);
@@ -69,6 +70,7 @@ The size of the number is 64*(1+ARRAY_128_BIT)*MAX_ARRAY_INDEX bits.
 		printf("time: %f\n", getcputime() - start);
 		return 0;
 	}
+
 
 
 compile and run
