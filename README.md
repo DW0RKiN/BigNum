@@ -29,7 +29,7 @@ The size of the number is 64*(1+ARRAY_128_BIT)*MAX_ARRAY_INDEX bits.
 	void project_Euler_03(my_number * num)
 	{
 		print_number ( stdout, "Project Euler problem 3\n\t", num, " =");	
-		int i = 0;
+		my_half i = 3;
 		my_number stop, n, temp, prime, mod;
 		char * s = " ";
 		copy(&n,num);					// n = num;
@@ -48,9 +48,16 @@ The size of the number is 64*(1+ARRAY_128_BIT)*MAX_ARRAY_INDEX bits.
 
 			} else 
 			{
-				inc(&prime);			// prime++;
-				if ( i ) inc(&prime);		// if ( i ) prime++;
-				i = 1;
+				if ( (i & 1) == 0 )		// 2,4 
+				{
+					add_half(&prime, i, -1);// 7,11,13,17,19,23,...+2,+4,+2,+4
+					i = 6 - i;		// 2,4,2,4...
+				} else				// 3,5,7 
+				{
+					prime.half[0] = i;
+					i += 2;
+					if ( i == 9 ) i = 4;
+				}
 			}
 		}
 		print_number (stdout, s, &n, "\n");
@@ -73,6 +80,8 @@ The size of the number is 64*(1+ARRAY_128_BIT)*MAX_ARRAY_INDEX bits.
 
 
 
+
+
 compile and run
 
     dworkin@dworkin-Aspire-E1-572G:~/Programovani$ clang --version
@@ -85,7 +94,7 @@ compile and run
     dworkin@dworkin-Aspire-E1-572G:~/Programovani$ ./euler03 12345678901234567890123456
     Project Euler problem 3
 	    12345678901234567890123456 = 2*2*2*2*2*2*3*17*71*218107*244251294564157
-    time: 3.932000
+    time: 2.644000
 
     dworkin@dworkin-Aspire-E1-572G:~/Programovani$ gcc --version
     gcc (Ubuntu 5.4.0-6ubuntu1~16.04.4) 5.4.0 20160609
@@ -97,11 +106,11 @@ compile and run
     dworkin@dworkin-Aspire-E1-572G:~/Programovani$ ./euler03 12345678901234567890123456
     Project Euler problem 3
 	    12345678901234567890123456 = 2*2*2*2*2*2*3*17*71*218107*244251294564157
-    time: 11.140000
+    time: 7.444000
     
     dworkin@dworkin-Aspire-E1-572G:~/Programovani$ gcc -O3 -std=c99 -Wall euler03.c -o euler03
     dworkin@dworkin-Aspire-E1-572G:~/Programovani$ ./euler03 12345678901234567890123456
     Project Euler problem 3
 	    12345678901234567890123456 = 2*2*2*2*2*2*3*17*71*218107*244251294564157
-    time: 1619.884000
+    time: 1082.443000
 
