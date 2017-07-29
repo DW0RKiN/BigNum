@@ -149,9 +149,9 @@ my_half div_half (my_number * res, my_half half);
 void mul (my_number * res, my_number * const_a, my_number * const_b);
 
 // res = res / num
-// return ( (res % num) == 0 )
-// &res == &num NENI povoleno
-int div (my_number * res, my_number * num);
+// mod = res % num
+// &res != &num, &res != &mod
+void div (my_number * res, my_number * num, my_number * mod);
 
 
 /*
@@ -169,5 +169,9 @@ void power (my_number * res, unsigned int pow);
 // return x
 // hi_byte (res) != 0
 int left_to_nonzero (my_number *res);
+
+// res = greatest_common_divisor (a, b)
+// &res == &a == &b
+void gcd(my_number * res, my_number * a, my_number * b);
 
 #endif
