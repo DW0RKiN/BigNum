@@ -358,16 +358,16 @@ void mul (my_number * res, my_number * const_a, my_number * const_b)
 
 
 // res = res / num
-// return ( (res % num) == 0 )
-// &res == &num NENI povoleno
-int div (my_number * res, my_number * num)
+// mod = res % num
+// &res != &num, &res != &mod
+void div (my_number * res, my_number * num, my_number * mod)
 {
 	int i;
-	my_number m, n;
-	my_number *pm = &m, *pn = &n;
+	my_number n;
+	my_number *pm = mod, *pn = &n;
 	my_full carry = 0;
 
-	set_zero (pm);
+	set_zero (mod);
 
 //	m << res << !(m - num)
 
@@ -381,15 +381,14 @@ int div (my_number * res, my_number * num)
 		shift_left (pm, 1, carry);
 		carry = 1 - sub (pn, pm, num);
 		if (carry) {
-			my_number *temp;
-			temp = pm;
+			my_number *temp = pm;
 			pm = pn;
 			pn = temp;
 		}
 		carry = shift_left (res, 1, carry);
 	}
 
-	return test_zero (pm);		// pozor! diky prohazovani to muze ukazovat na n
+	if ( mod != pm ) copy ( mod, pm);	
 }
 
 
@@ -465,4 +464,27 @@ int left_to_nonzero (my_number *res)
 	while ( k--) str[k] = 0;
 
 	return ret;
+}
+
+// res = greatest_common_divisor (a, b)
+// &res == &a == &b
+void gcd(my_number * res, my_number * a, my_number * b) 
+{
+	my_number temp_b, mod;
+	my_number *pm = &mod;
+	my_number *pa = res;
+	my_number *pb = &temp_b;
+	copy ( pb, b );
+	copy ( pa, a );
+
+	while ( ! test_zero(pb) ) 
+	{
+		div(pa , pb , pm);
+		my_number *temp = pa;
+		pa = pb;
+		pb = pm;
+		pm = temp;
+	}
+
+	if ( pa != res) copy (res, pa);
 }
