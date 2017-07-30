@@ -180,7 +180,7 @@ void add_half (my_number * res, my_half num, int i)
 	while (pm[1]) {
 		i++;
 		if (i >= SUM_HALF) {
-			fprintf (stderr, "Preteceni! Zvyste SUM_FULL.\n");
+			fprintf (stderr, ERR_OVER);
 			break;
 		}
 		pm[0] = pm[1];
@@ -352,7 +352,7 @@ void mul (my_number * res, my_number * const_a, my_number * const_b)
 	
 	while ( ! test_zero( &a) ) {
 		if ( shift_right ( &a, 1, 0 )) add(res,res,&b);
-		if ( shift_left ( &b, 1, 0 )) fprintf(stderr, "Preteceni pri nasobeni!\n");
+		if ( shift_left ( &b, 1, 0 )) fprintf(stderr, ERR_OVER);
 	}
 }
 
