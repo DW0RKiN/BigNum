@@ -34,6 +34,15 @@ before #include "bignum.c"
 	#define HALFSIZE	"8"	// == sizeof(my_half)
 #endif
 
+#define	ENG	0
+#define	CZE	1
+#define LANG	ENG
+#if LANG == CZE
+	#define ERR_OVER	"Preteceni! Zvyste MAX_ARRAY_INDEX.\n"
+#else
+	#define ERR_OVER	"Overflow! Increase MAX_ARRAY_INDEX.\n"
+#endif
+
 union mix {
 	my_full f;
 	my_half h[2];
